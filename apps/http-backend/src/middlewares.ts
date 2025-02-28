@@ -7,7 +7,9 @@ interface authReq extends Request {
     userId: String;
 }
 export function middleware(req: Request, res: Response, next: NextFunction) {
-    const token = req.headers["authorization"] || "";
+    // const token = req.headers["authorization"] || "";
+    console.log(req.cookies)
+    const token = req.cookies.token;
 
     const decode = jwt.verify(token, JWT_SECRET) as JwtPayload;
     if (decode) {

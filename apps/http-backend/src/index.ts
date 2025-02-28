@@ -2,19 +2,25 @@ import express from "express";
 import jwt from "jsonwebtoken";
 import { CreateRoomSchema, CreateUserSchema, SigninSchema } from "@repo/common/types";
 import { db } from "@repo/db/client";
-
+import cookieParser from "cookie-parser";
 import { JWT_SECRET } from "@repo/backend-common/config";
 import { middleware } from "./middlewares";
-
+import cors from 'cors';
 const app = express();
 app.use(express.json());
+app.use(cookieParser())
+app.use(cors({
+    origin: "http://localhost:3000",
+    credentials: true
+}));
 
 app.post("/api/signup", async (req, res) => {
     try {
         const parsedData = CreateUserSchema.safeParse(req.body);
         if (!parsedData.success) {
             res.json({
-                message: "invalid inputs"
+                message: "invalid inputs",
+                success: false,
             });
             return;
         }
@@ -23,6 +29,7 @@ app.post("/api/signup", async (req, res) => {
                 email: parsedData.data.email,
             },
         })
+        console.log(User)
         if (User) {
             res.status(403).json({
                 message: "User already exists with this email"
@@ -38,6 +45,7 @@ app.post("/api/signup", async (req, res) => {
             }
         })
         res.json({
+            success: true,
             userId: user.id,
         })
     }
@@ -74,10 +82,18 @@ app.post("/api/signin", async (req, res) => {
             return;
         }
 
-        const token = jwt.sign({ userId: user.id }, JWT_SECRET);
+        const token = jwt.sign({ userId: user.id }, JWT_SECRET, {
+            expiresIn: "1h",
+        });
+        // res.cookie("token", token, {
+        //     maxAge: 3600000
+        // })
         res.json({
-            token
-        })
+            token,
+            success: true,
+            message: "Login success"
+        });
+
     }
     catch (err) {
         console.log("error in signin", err);
