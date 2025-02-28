@@ -8,8 +8,11 @@
   "exports": {
     "./config": "./src/index.ts"
   },
-  "dependencies": {
+  "devDependencies": {
     "@repo/typescript-config": "workspace:*"
+  },
+  "dependencies": {
+    "@types/node": "^22.13.5"
   },
   "keywords": [],
   "author": "",
