@@ -1,11 +1,13 @@
 import express from "express";
 import jwt from "jsonwebtoken";
 import { CreateRoomSchema, CreateUserSchema, SigninSchema } from "@repo/common/types";
-import { db } from "@repo/db/client";
+import db from "@repo/db/client";
 import cookieParser from "cookie-parser";
 import { JWT_SECRET } from "@repo/backend-common/config";
 import { middleware } from "./middlewares";
 import cors from 'cors';
+import bcrypt from "bcrypt";
+
 const app = express();
 app.use(express.json());
 app.use(cookieParser())
@@ -36,10 +38,11 @@ app.post("/api/signup", async (req, res) => {
             })
             return;
         }
+        const hashedPassword = await bcrypt.hash(parsedData.data.password, 10);
         const user = await db.user.create({
             data: {
                 email: parsedData.data.email,
-                password: parsedData.data.password,
+                password: hashedPassword,
                 name: parsedData.data.name,
                 photo: parsedData.data?.name,
             }

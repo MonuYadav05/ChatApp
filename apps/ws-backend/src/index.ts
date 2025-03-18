@@ -1,7 +1,7 @@
 import webSocket from "ws";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { JWT_SECRET } from "@repo/backend-common/config"
-import { db } from "@repo/db/client";
+import db from "@repo/db/client";
 
 interface User {
     ws: webSocket,
