@@ -1,7 +1,7 @@
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 import React from 'react';
-import { authOptions } from '../api/auth/lib/auth';
+import { authOptions } from '../lib/auth';
 import { Signin } from '../components/Signin';
 
 export default async function SigninPage() {

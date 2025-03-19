@@ -3,10 +3,10 @@ import CredentialsProvider from "next-auth/providers/credentials"
 import bcrypt from "bcrypt";
 import prisma from "@repo/db/client";
 import { importJWK, SignJWT, JWTPayload } from "jose";
-import { randomUUID } from "crypto";
+
 import { NextAuthOptions, Session, User } from "next-auth";
 import { JWT } from "next-auth/jwt";
-
+const randomUUID = crypto.randomUUID;
 export interface session extends Session {
     user: {
         id: string,
@@ -18,13 +18,13 @@ export interface session extends Session {
 
 export interface token extends JWT {
     uid: string,
-    JwtToken: string,
+    jwtToken: string,
 }
 
 export interface user {
     id: string,
     name?: string,
-    emial: string,
+    email: string,
     token: string,
 }
 
@@ -110,7 +110,7 @@ export const authOptions = {
             const newSession: session = session as session;
             if (newSession.user && token.uid) {
                 newSession.user.id = token.uid as string;
-                newSession.user.jwtToken = token.JwtToken as string;
+                newSession.user.jwtToken = token.jwtToken as string;
             }
             return newSession;
         },
@@ -118,11 +118,13 @@ export const authOptions = {
             const newToken: token = token as token;
             if (user) {
                 newToken.uid = user.id;
-                newToken.JwtToken = (user as user).token;
+                newToken.jwtToken = (user as user).token;
             }
             return newToken;
         },
     },
-
+    pages: {
+        signIn: "/signin",
+    },
     secret: process.env.NEXTAUTH_SECRET || "secr3t"
 } satisfies NextAuthOptions;
