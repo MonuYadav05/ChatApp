@@ -16,14 +16,14 @@ const users: User[] = [];
 const checkUser = (token: string) => {
     try {
         const decode = jwt.verify(token, JWT_SECRET);
-
+        // console.log(decode)
         if (typeof (decode) == "string") {
             return null;
         }
-        if (!decode || !(decode).userId) {
+        if (!decode || !(decode).id) {
             return null;
         }
-        return decode.userId;
+        return decode.id;
     } catch (err) {
         console.log("error in ws auth", err);
         // return "not authorized";
@@ -47,7 +47,7 @@ wss.on("connection", (ws, request) => {
         rooms: []
     })
 
-
+    // console.log("usersaray", users)
     ws.on("message", async (data) => {
         let parsedData;
         if (typeof data !== "string") {
@@ -91,11 +91,11 @@ wss.on("connection", (ws, request) => {
                 })
 
             }
-            console.log(users)
+            // console.log(users)
         }
         catch (err) {
             console.log("error in message", err);
-            console.log(users)
+            // console.log(users)
             // ws.close(403, "not join");
         }
     })

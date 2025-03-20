@@ -1,6 +1,6 @@
 "use client"
 import { useState } from "react";
-import { BACKEND_URL } from "../config";
+import { BACKEND_URL } from "@/app/config";
 import axios from "axios";
 
 interface formData {

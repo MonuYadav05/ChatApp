@@ -3,7 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials"
 import bcrypt from "bcrypt";
 import prisma from "@repo/db/client";
 import { importJWK, SignJWT, JWTPayload } from "jose";
-
+import { JWT_SECRET } from "@repo/backend-common/config"
 import { NextAuthOptions, Session, User } from "next-auth";
 import { JWT } from "next-auth/jwt";
 const randomUUID = crypto.randomUUID;
@@ -27,10 +27,10 @@ export interface user {
     email: string,
     token: string,
 }
-
+console.log(JWT_SECRET);
 const generateJWT = async (payload: JWTPayload) => {
-    const secret = process.env.JWT_SECRET;
-    const jwk = await importJWK({ alg: "HS256", k: secret, kty: "oct" });
+    const secret = JWT_SECRET;
+    const jwk = await importJWK({ alg: "HS256", k: Buffer.from(JWT_SECRET, "utf-8").toString("base64url"), kty: "oct" });
 
     const jwt = await new SignJWT({
         ...payload,

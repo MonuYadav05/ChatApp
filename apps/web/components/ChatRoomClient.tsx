@@ -1,6 +1,6 @@
 "use client"
 import { useEffect, useState } from "react";
-import { useSocket } from "../hooks/useSocket"
+import { useSocket } from "@/app/hooks/useSocket"
 
 export default function ChatRoomClient({ roomId, messages }: {
     roomId: number,

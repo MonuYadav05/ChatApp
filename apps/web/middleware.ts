@@ -13,11 +13,11 @@ const withAuth = async (req: NextRequestWithAuth) => {
         return NextResponse.redirect(new URL("/invalidsession", req.url));
     }
 
-    // console.log("Token:", token.JwtToken);
-    // console.log("Token:", token);
-    // console.log("NEXT_PUBLIC_BASE_URL:", process.env.NEXT_PUBLIC_BASE_URL);
+    console.log("Token:", token.jwtToken);
+    console.log("Token:", token);
+    console.log("NEXT_PUBLIC_BASE_URL:", process.env.NEXT_PUBLIC_BASE_URL);
 
-    const user = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/user?token=` + token.JwtToken,
+    const user = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/user?token=` + token.jwtToken,
         {
             method: "GET",
             headers: {
@@ -29,7 +29,7 @@ const withAuth = async (req: NextRequestWithAuth) => {
 
     const json = await user.json();
     if (!json.user) {
-        return NextResponse.redirect(new URL("/signin", req.url));
+        return NextResponse.redirect(new URL("/invalidsession", req.url));
     }
 
     return NextResponse.next();
