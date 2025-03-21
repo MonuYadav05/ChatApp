@@ -24,40 +24,17 @@ model Session {
 model User {
   id            String    @id @default(uuid())
   name          String
-  photo         String
   email         String    @unique
   token         String?
   emailVerified DateTime?
   image         String?
   role          String    @default("USER")
-  accounts      Account[]
   sessions      Session[]
   password      String
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   rooms         Room[]
   chats         Chat[]
-}
-
-model Account {
-  id                String  @id @default(uuid())
-  userId            String
-  type              String
-  provider          String
-  providerAccountId String
-  access_token      String?
-  expires_at        Int?
-  id_token          String?
-  refresh_token     String?
-  scope             String?
-  token_type        String?
-  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
-
-model VerificationToken {
-  identifier String
-  token      String   @unique
-  expires    DateTime
 }
 
 model Room {

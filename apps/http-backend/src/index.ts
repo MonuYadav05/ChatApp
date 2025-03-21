@@ -44,7 +44,6 @@ app.post("/api/signup", async (req, res) => {
                 email: parsedData.data.email,
                 password: hashedPassword,
                 name: parsedData.data.name,
-                photo: parsedData.data?.name,
             }
         })
         res.json({

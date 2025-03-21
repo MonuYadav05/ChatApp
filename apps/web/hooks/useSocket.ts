@@ -1,6 +1,6 @@
 "use client"
 import { useEffect, useState } from "react";
-import { WS_URL } from "../config";
+import { WS_URL } from "../app/config";
 import { useSession } from "next-auth/react";
 
 export function useSocket() {
