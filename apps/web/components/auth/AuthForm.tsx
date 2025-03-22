@@ -1,6 +1,6 @@
 "use client"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "./ui/card";
-import { Button } from "./ui/button";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../ui/card";
+import { Button } from "../ui/button";
 import { Github } from "lucide-react";
 import { SigninForm } from "./SigninForm";
 import Link from "next/link";

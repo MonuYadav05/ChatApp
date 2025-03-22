@@ -3,10 +3,11 @@ import { motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import Link from "next/link"
 import { Button } from "./ui/button";
-import { ThemeToggler } from "./ThemeToggler";
+import { ThemeToggler } from "@/components/theme/ThemeToggler";
 import { useState } from "react";
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const NAV_ITEMS = [
     { name: "Home", Link: "/home" },
@@ -24,15 +25,16 @@ export function AppBar() {
         <motion.header
             initial={{ y: -100 }}
             animate={{ y: 0 }}
-            className="fixed top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-            <nav className="container mx-auto px-4 h-14 flex items-center justify-evenly">
-                <Link href={"/"} className="flex  items-center gap-2">
+            className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
+        >
+            <nav className="container mx-auto px-4 h-14 flex items-center justify-between">
+                <Link href="/" className="flex items-center gap-2">
                     <motion.div
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         className="font-bold text-xl text-primary"
                     >
-                        Chatty
+                        ChatApp
                     </motion.div>
                 </Link>
 
@@ -44,28 +46,25 @@ export function AppBar() {
                         </Link>
                     ))}
                     <ThemeToggler />
-
                 </div>
 
                 <div>
                     <Button variant={"secondary"} onClick={() => {
                         if (session && session?.data?.user) {
+                            toast.loading("Logging Out...");
                             signOut({
                                 callbackUrl: "/"
                             });
-                        }
-                        else {
+                        } else {
                             router.push("/signin");
                         }
                     }}>
                         {session && session?.data?.user ? "LogOut" : "Sign in"}
                     </Button>
                 </div>
+
                 {/* Mobile Menu Button */}
-                <button
-                    className="md:hidden"
-                    onClick={() => setIsOpen(!isOpen)}
-                >
+                <button className="md:hidden" onClick={() => setIsOpen(!isOpen)}>
                     {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
                 </button>
             </nav>
@@ -88,10 +87,9 @@ export function AppBar() {
                                     {item.name}
                                 </Link>
                             ))}
-
                             <div className="flex items-center gap-2 mr-7">
                                 <ThemeToggler />
-                                <Button asChild className="w-[80%]  " variant={"secondary"} onClick={() => setIsOpen(false)}>
+                                <Button asChild className="w-[80%]" variant={"secondary"} onClick={() => setIsOpen(false)}>
                                     <Link href="/chat">Start Chatting</Link>
                                 </Button>
                             </div>
@@ -100,5 +98,6 @@ export function AppBar() {
                 )
             }
         </motion.header>
+
     )
 }

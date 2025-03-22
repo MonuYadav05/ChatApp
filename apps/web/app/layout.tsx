@@ -3,6 +3,8 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { Providers } from "./providers"
 import { AppBar } from "@/components/AppBar";
+import { Toaster } from "sonner";
+import NextTopLoader from 'nextjs-toploader';
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -26,6 +28,7 @@ export default function RootLayout({
   return (
     <html suppressHydrationWarning={true} lang="en">
       <body suppressHydrationWarning={true} className={`${geistSans.variable} ${geistMono.variable}`}>
+        <NextTopLoader showSpinner={false} />
         <Providers>
           <AppBar />
           {children}

@@ -73,19 +73,31 @@ wss.on("connection", (ws, request) => {
             if (parsedData.type == "chat") {
                 const roomId = parsedData.roomId;
                 const message = parsedData.message;
-                await db.chat.create({
+                const newChat = await db.chat.create({
                     data: {
                         roomId: Number(roomId),
                         message,
-                        userId
+                        userId,
                     }
                 });
+
+                const userName = await db.user.findUnique({
+                    where: {
+                        id: userId
+                    },
+                    select: {
+                        name: true,
+                    }
+                })
                 users.map((user) => {
                     if (user.rooms.includes(roomId)) {
                         user.ws.send(JSON.stringify({
                             type: "chat",
                             message: message,
-                            roomId
+                            roomId,
+                            userName: userName?.name,
+                            createdAt: newChat.createdAt.toISOString(),
+                            id: newChat.id
                         }));
                     }
                 })

@@ -3,10 +3,11 @@ import { z } from "zod"
 import { useForm } from "react-hook-form";
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
+import { Input } from "../ui/input";
+import { Button } from "../ui/button";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const formSchema = z.object({
     email: z.string().email({ message: "invalid email" }),
@@ -26,19 +27,35 @@ export function SigninForm() {
 
     async function onSubmit(data: z.infer<typeof formSchema>) {
         console.log(data);
+        const loadId = toast.loading("Signing In...");
         try {
             const res = await signIn('credentials', {
                 email: data.email,
                 password: data.password,
                 redirect: false,
             });
+            toast.dismiss(loadId);
             if (!res?.error) {
-                router.push('/');
-                console.log("Signin Success")
+                router.push('/home');
+                toast.success("Signed In");
+            } else {
+                if (res.status === 401) {
+                    toast.error('Invalid Credentials, try again!');
+                } else if (res.status === 400) {
+                    toast.error('Missing Credentials!');
+                } else if (res.status === 404) {
+                    toast.error('Account not found!');
+                } else if (res.status === 403) {
+                    toast.error('Forbidden!');
+                } else {
+                    toast.error('oops something went wrong..!');
+                }
             }
         }
         catch (e) {
+            toast.dismiss(loadId);
             console.log(e)
+            toast.error('oops something went wrong..!');
         }
     }
 

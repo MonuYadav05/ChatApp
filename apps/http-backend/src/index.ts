@@ -106,6 +106,7 @@ app.post("/api/signin", async (req, res) => {
 
 app.post("/api/room", middleware, async (req, res) => {
     try {
+        console.log(req.body)
         const parsedData = CreateRoomSchema.safeParse(req.body);
         if (!parsedData.success) {
             res.status(403).json({
@@ -115,14 +116,18 @@ app.post("/api/room", middleware, async (req, res) => {
         }
         // @ts-ignore
         const userId = req.userId;
+        console.log("descritioj", parsedData.data.description)
         const room = await db.room.create({
             data: {
                 slug: parsedData.data.name,
+                description: parsedData.data.description,
+                type: parsedData.data.type,
                 adminId: userId,
             }
         })
         res.json({
             "roomId": room.id,
+            "success": true
         })
     }
     catch (err) {

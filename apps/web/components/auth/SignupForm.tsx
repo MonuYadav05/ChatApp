@@ -3,11 +3,12 @@ import { z } from "zod"
 import { useForm } from "react-hook-form";
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
+import { Input } from "../ui/input";
+import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
 import { BACKEND_URL } from "@/app/config";
 import axios from "axios";
+import { toast } from "sonner";
 
 const formSchema = z.object({
     name: z.string().min(2, { message: "name must be at least 2 characters" }),
@@ -29,13 +30,23 @@ export function SignupForm() {
 
 
     const onSubmit = async (data: z.infer<typeof formSchema>) => {
+        const loadId = toast.loading("Signing Up...");
         try {
-            console.log(data);
+            // console.log(data);
             const res = await axios.post(`${BACKEND_URL}/api/signup`, data);
-            console.log(res.data);
-            if (res.data.success) { console.log("signup success") }
+            // console.log(res.data);
+            toast.dismiss(loadId);
+            if (res.data.success) {
+                toast.success("Signed Up Successfully");
+                router.refresh();
+                router.push("/signin");
+            } else {
+                toast.error("Signup Failed");
+            }
         }
         catch (err: any) {
+            toast.dismiss(loadId);
+            toast.error(err.response.data.message);
             console.log(err.response.data.message)
         }
     }

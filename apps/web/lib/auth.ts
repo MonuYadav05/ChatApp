@@ -27,7 +27,7 @@ export interface user {
     email: string,
     token: string,
 }
-console.log(JWT_SECRET);
+// console.log(JWT_SECRET);
 const generateJWT = async (payload: JWTPayload) => {
     const secret = JWT_SECRET;
     const jwk = await importJWK({ alg: "HS256", k: Buffer.from(JWT_SECRET, "utf-8").toString("base64url"), kty: "oct" });

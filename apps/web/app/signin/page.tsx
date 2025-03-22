@@ -2,7 +2,7 @@ import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 import React from 'react';
 import { authOptions } from '../../lib/auth';
-import { AuthForm } from '../../components/AuthForm';
+import { AuthForm } from '../../components/auth/AuthForm';
 
 export default async function SigninPage() {
     const session = await getServerSession(authOptions);
