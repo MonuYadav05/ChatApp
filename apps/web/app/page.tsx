@@ -7,6 +7,7 @@ const getUserDetails = async () => {
   const session = getServerSession(authOptions);
   return session;
 }
+
 export default async function Home() {
   const session = await getUserDetails();
 

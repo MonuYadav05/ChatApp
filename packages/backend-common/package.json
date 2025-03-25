@@ -12,7 +12,9 @@
     "@repo/typescript-config": "workspace:*"
   },
   "dependencies": {
-    "@types/node": "^22.13.5"
+    "@types/node": "^22.13.5",
+    "dotenv": "^16.4.7",
+    "tsconfig-paths": "^4.2.0"
   },
   "keywords": [],
   "author": "",
