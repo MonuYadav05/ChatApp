@@ -6,9 +6,9 @@ import { JWT_SECRET } from "@repo/backend-common/config";
 interface authReq extends Request {
     userId: String;
 }
-export function middleware(req: Request, res: Response, next: NextFunction) {
+export function authMiddleware(req: Request, res: Response, next: NextFunction) {
     const token = req.headers["authorization"] || "";
-    console.log(token)
+    // console.log(token)
     // const token = req.cookies.token;
 
     const decode = jwt.verify(token, JWT_SECRET) as JwtPayload;
