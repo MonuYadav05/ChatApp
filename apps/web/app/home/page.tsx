@@ -20,7 +20,6 @@ const getRooms = async () => {
 export default async function Home() {
 
     const rooms = await getRooms();
-    console.log(rooms)
     if (rooms.length === 0) {
         toast.error("No Rooms Found");
         return <div>No Rooms Found</div>

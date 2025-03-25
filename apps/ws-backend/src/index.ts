@@ -2,18 +2,28 @@ import webSocket from "ws";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { JWT_SECRET } from "@repo/backend-common/config"
 import db from "@repo/db/client";
+import { Worker, Queue } from "bullmq";
+import IORedis from "ioredis";
+
+const redisConnection = new IORedis("rediss://default:AVNS_WC8pkcJ3kjhRQwwuo-j@valkey-f0e1770-monuyadav60010-7bdc.f.aivencloud.com:18798", {
+    maxRetriesPerRequest: null
+});
+
+const queue = new Queue("chats", { connection: redisConnection });
+
 
 interface User {
     ws: webSocket,
-    rooms: String[],
-    userId: String,
+    rooms: string[],
+    userId: string,
+    userName?: string,
 }
 
 const wss = new webSocket.Server({ port: 8080 });
 
 const users: User[] = [];
 
-const checkUser = (token: string) => {
+const checkUser = async (token: string) => {
     try {
         const decode = jwt.verify(token, JWT_SECRET);
         // console.log(decode)
@@ -23,6 +33,9 @@ const checkUser = (token: string) => {
         if (!decode || !(decode).id) {
             return null;
         }
+
+
+
         return decode.id;
     } catch (err) {
         console.log("error in ws auth", err);
@@ -30,13 +43,13 @@ const checkUser = (token: string) => {
     }
 }
 
-wss.on("connection", (ws, request) => {
+wss.on("connection", async (ws, request) => {
     const url = request.url;
     if (!url) return;
     const queryParams = new URLSearchParams(url.split("?")[1]);
-    const token = queryParams.get("token") || "";
+    const token = await queryParams.get("token") || "";
 
-    const userId = checkUser(token);
+    const userId = await checkUser(token);
     if (!userId || userId == null) {
         ws.close();
         return;
@@ -44,7 +57,7 @@ wss.on("connection", (ws, request) => {
     users.push({
         userId,
         ws,
-        rooms: []
+        rooms: [],
     })
 
     // console.log("usersaray", users)
@@ -60,6 +73,7 @@ wss.on("connection", (ws, request) => {
             if (parsedData.type === "join-room") {
                 const user = users.find(x => x.ws === ws);
                 user?.rooms.push(parsedData.roomId);
+                user!.userName = parsedData.userName;
             }
 
             if (parsedData.type == "leave-room") {
@@ -73,35 +87,23 @@ wss.on("connection", (ws, request) => {
             if (parsedData.type == "chat") {
                 const roomId = parsedData.roomId;
                 const message = parsedData.message;
-                const newChat = await db.chat.create({
-                    data: {
-                        roomId: Number(roomId),
-                        message,
-                        userId,
-                    }
-                });
 
-                const userName = await db.user.findUnique({
-                    where: {
-                        id: userId
-                    },
-                    select: {
-                        name: true,
-                    }
-                })
                 users.map((user) => {
                     if (user.rooms.includes(roomId)) {
                         user.ws.send(JSON.stringify({
                             type: "chat",
                             message: message,
                             roomId,
-                            userName: userName?.name,
-                            createdAt: newChat.createdAt.toISOString(),
-                            id: newChat.id
+                            userName: user.userName,
+                            createdAt: new Date().toISOString(),
                         }));
                     }
                 })
-
+                await queue.add("chat", {
+                    roomId,
+                    message,
+                    userId
+                })
             }
             // console.log(users)
         }
@@ -111,4 +113,17 @@ wss.on("connection", (ws, request) => {
             // ws.close(403, "not join");
         }
     })
-})  
+})
+
+const worker = new Worker("chats", async job => {
+    if (job.name === "chat") {
+        const { roomId, message, userId } = job.data;
+        const newChat = await db.chat.create({
+            data: {
+                roomId: Number(roomId),
+                message,
+                userId,
+            }
+        });
+    }
+}, { connection: redisConnection })

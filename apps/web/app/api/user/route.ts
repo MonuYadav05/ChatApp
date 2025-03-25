@@ -1,5 +1,7 @@
 import prisma from "@repo/db/client";
 import { NextRequest, NextResponse } from "next/server";
+import jwt from "jsonwebtoken";
+import { JWT_SECRET } from "@repo/backend-common/config";
 
 export async function GET(req: NextRequest) {
     const url = new URL(req.url);
@@ -13,6 +15,14 @@ export async function GET(req: NextRequest) {
         // return NextResponse.redirect(new URL("/signin", req.url))
     }
 
+    const decode = jwt.verify(token, JWT_SECRET);
+    if (!decode) {
+        return NextResponse.json({
+            success: false,
+            message: "jwt expired"
+        })
+    }
+
     const user = await prisma.user.findFirst({
         where: {
             token: token
@@ -21,7 +31,7 @@ export async function GET(req: NextRequest) {
     if (!user) {
         return NextResponse.json({
             success: false,
-            message: "in get user"
+            message: "user Not Found"
         })
         // return NextResponse.redirect(new URL("/signin", req.url))
     }

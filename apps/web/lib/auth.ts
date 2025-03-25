@@ -1,4 +1,3 @@
-import { PrismaAdapter } from "@auth/prisma-adapter";
 import CredentialsProvider from "next-auth/providers/credentials"
 import bcrypt from "bcrypt";
 import prisma from "@repo/db/client";
@@ -29,7 +28,6 @@ export interface user {
 }
 // console.log(JWT_SECRET);
 const generateJWT = async (payload: JWTPayload) => {
-    const secret = JWT_SECRET;
     const jwk = await importJWK({ alg: "HS256", k: Buffer.from(JWT_SECRET, "utf-8").toString("base64url"), kty: "oct" });
 
     const jwt = await new SignJWT({
@@ -38,7 +36,7 @@ const generateJWT = async (payload: JWTPayload) => {
         jti: randomUUID(),
     })
         .setProtectedHeader({ alg: "HS256" })
-        .setExpirationTime("1h")
+        .setExpirationTime("1d")
         .sign(jwk);
 
     return jwt;

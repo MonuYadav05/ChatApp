@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Send, SmilePlus, User, Users } from "lucide-react";
 import { Message } from "@/lib/types";
+import { useSession } from "next-auth/react";
 
 
 
@@ -16,7 +17,7 @@ export default function ChatRoomClient({ roomId, Messages }: {
 }) {
 
     const autoscrollRef = useRef<HTMLDivElement>(null);
-
+    const { data: session } = useSession();
     const { socket, loading } = useSocket();
     // const [messages, setChats] = useState(messages);
     const [currentMessage, setCurrentMessage] = useState<string>("");
@@ -30,16 +31,20 @@ export default function ChatRoomClient({ roomId, Messages }: {
     }, [messages]);
 
     useEffect(() => {
-        if (socket && !loading) {
+        if (session && socket && socket.readyState === WebSocket.OPEN && !loading) {
+            console.log("sending join room")
+            console.log(session?.user?.name)
             socket.send(JSON.stringify({
                 type: "join-room",
-                roomId: roomId
+                roomId: roomId,
+                userName: session?.user?.name
             }));
 
             socket.onmessage = (event) => {
                 const parsedData = JSON.parse(event.data);
                 if (parsedData.type == "chat") {
-                    const newMessage = { message: parsedData.message, createdAt: new Date(parsedData.createdAt), id: parsedData.id, userName: parsedData.userName }
+                    console.log(parsedData)
+                    const newMessage = { message: parsedData.message, createdAt: new Date(parsedData.createdAt), userName: parsedData.userName }
                     setMessages((prev) => [...prev, newMessage])
                 }
             }
@@ -62,8 +67,8 @@ export default function ChatRoomClient({ roomId, Messages }: {
             {/* Messages */}
             <ScrollArea className="flex-1 px-4 pt-4 h-[calc(100vh-10rem)]" >
                 <div className="space-y-4" >
-                    {messages.map((message) => (
-                        <Card key={message.id} className="p-4 bg-background">
+                    {messages.map((message, index) => (
+                        <Card key={index} className="p-4 bg-background">
                             <div className="flex items-start gap-3">
                                 <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
                                     <User className="h-4 w-4" />

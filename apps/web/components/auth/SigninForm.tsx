@@ -26,7 +26,6 @@ export function SigninForm() {
     })
 
     async function onSubmit(data: z.infer<typeof formSchema>) {
-        console.log(data);
         const loadId = toast.loading("Signing In...");
         try {
             const res = await signIn('credentials', {

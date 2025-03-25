@@ -10,7 +10,6 @@ async function getchats(roomId: number) {
         const messages: Message[] = [];
         res.data.chats.map((x: any) => {
             messages.push({
-                id: x?.id,
                 createdAt: new Date(x.createdAt),
                 message: x?.message,
                 userName: x?.user?.name,
