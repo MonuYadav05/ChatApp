@@ -4,8 +4,9 @@ import { JWT_SECRET } from "@repo/backend-common/config"
 import db from "@repo/db/client";
 import { Worker, Queue } from "bullmq";
 import IORedis from "ioredis";
+import { REDIS_AVIEN } from "@repo/backend-common/config";
 
-const redisConnection = new IORedis("rediss://default:AVNS_WC8pkcJ3kjhRQwwuo-j@valkey-f0e1770-monuyadav60010-7bdc.f.aivencloud.com:18798", {
+const redisConnection = new IORedis(REDIS_AVIEN, {
     maxRetriesPerRequest: null
 });
 
