@@ -6,10 +6,10 @@ WORKDIR /usr/src/app
 RUN npm install -g pnpm 
 
 
-COPY package.json pnpm-lock.yaml turbo.json tsconfig.json ./
-COPY apps ./apps
-COPY packages ./packages
-
+# COPY package.json pnpm-lock.yaml turbo.json tsconfig.json ./
+# COPY apps ./apps
+# COPY packages ./packages
+COPY . .
 
 # install dependecies
 RUN pnpm install
