@@ -15,7 +15,7 @@ websocketController(server);
 app.use(express.json());
 app.use(cookieParser())
 app.use(cors({
-    origin: "https://draw-app-web.vercel.app/",
+    origin: "https://draw-app-web.vercel.app",
     credentials: true
 }));
 
