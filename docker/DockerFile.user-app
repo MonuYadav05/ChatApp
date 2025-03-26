@@ -7,11 +7,11 @@ COPY apps ./apps
 COPY packages ./packages
 
 # install dependecies
-RUN npm install
+RUN pnpm install
 # add a script to the global package.json that does this?
-RUN npm run db:generate
+RUN pnpm run db:generate
 
 # filter the build down to just one app?
-RUN npm run build
+RUN pnpm run build
 
 CMD ["pnpm" , "run" , "start-web"]
