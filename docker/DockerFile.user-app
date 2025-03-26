@@ -13,6 +13,9 @@ COPY packages ./packages
 
 # install dependecies
 RUN pnpm install
+
+RUN pnpm add prisma@6.5.0 -D
+
 # add a script to the global package.json that does this?
 RUN pnpm run db:generate
 
