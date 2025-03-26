@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "db:generate": "prisma generate",
+    "prisma:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
     "db:push": "prisma db push --skip-generate"
   },
