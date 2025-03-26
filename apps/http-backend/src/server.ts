@@ -15,13 +15,11 @@ websocketController(server);
 app.use(express.json());
 app.use(cookieParser())
 app.use(cors({
-    origin: "http://localhost:3000",
+    origin: "https://draw-app-web.vercel.app/",
     credentials: true
 }));
 
 app.use("/", routes);
-
-
 
 app.get("/", (req, res) => {
     res.send("hi there");

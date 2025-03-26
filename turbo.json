@@ -17,7 +17,9 @@
       "env": [
         "DATABASE_URL",
         "NEXTAUTH_SECRET",
-        "NEXTAUTH_URL"
+        "NEXTAUTH_URL",
+        "REDIS_AVIEN",
+        "JWT_SECRET"
       ]
     },
     "lint": {

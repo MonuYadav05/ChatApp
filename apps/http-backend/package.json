@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "prebuild": "pnpm --filter=@repo/common build && pnpm --filter=@repo/db build",
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
     "build": "tsc -b",
     "start": "node ./dist/server.js"
