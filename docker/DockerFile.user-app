@@ -14,4 +14,4 @@ RUN npm run db:generate
 # filter the build down to just one app?
 RUN npm run build
 
-CMD ["npm" , "run" , "start-web"]
+CMD ["pnpm" , "run" , "start-web"]
