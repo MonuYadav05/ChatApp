@@ -21,7 +21,7 @@ app.use(cors({
 
 app.use("/", routes);
 
-app.get("/", (req, res) => {
+app.get("/hi", (req, res) => {
     res.send("hi there");
 })
 server.listen(4000, () => {
