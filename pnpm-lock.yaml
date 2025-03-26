@@ -7,6 +7,13 @@ settings:
 importers:
 
   .:
+    dependencies:
+      '@prisma/client':
+        specifier: ^6.4.1
+        version: 6.4.1(prisma@6.4.1(typescript@5.7.3))(typescript@5.7.3)
+      prisma:
+        specifier: ^6.4.1
+        version: 6.4.1(typescript@5.7.3)
     devDependencies:
       prettier:
         specifier: ^3.5.0
