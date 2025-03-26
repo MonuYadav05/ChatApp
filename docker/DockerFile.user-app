@@ -19,6 +19,6 @@ RUN pnpm install
 RUN pnpm run db:generate
 
 # filter the build down to just one app?
-RUN pnpm run build
+RUN pnpm build
 
 CMD ["pnpm" , "run" , "start-web"]

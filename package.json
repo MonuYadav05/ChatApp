@@ -2,12 +2,12 @@
   "name": "Excalidraw",
   "private": true,
   "scripts": {
-    "build": "turbo run build --filter=web",
-    "dev": "turbo run dev --filter=web",
+    "build": "turbo run build",
+    "dev": "turbo run dev",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "check-types": "turbo run check-types",
-    "start-web": "cd ./apps/wed && npm run start",
+    "start-web": "cd ./apps/web && pnpm run start",
     "db:generate": "cd packages/database && npx prisma generate && cd ../.."
   },
   "devDependencies": {
