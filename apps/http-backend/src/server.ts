@@ -15,8 +15,13 @@ websocketController(server);
 app.use(express.json());
 app.use(cookieParser())
 app.use(cors({
-    origin: "https://draw-app-web.vercel.app",
-    credentials: true
+    origin: (origin, callback) => {
+        if (!origin) return callback(null, true); // Allow requests with no origin (like mobile apps, Postman)
+        return callback(null, true);
+    },
+    credentials: true,
+    allowedHeaders: ["Content-Type", "Authorization"],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
 }));
 
 app.use("/", routes);
