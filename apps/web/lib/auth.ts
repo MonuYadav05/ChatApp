@@ -61,7 +61,6 @@ export const authOptions = {
                     if (!email || !password) {
                         return null;
                     }
-                    const hashedPassword = await bcrypt.hash(password, 10);
 
                     const userDb = await prisma.user.findFirst({
                         where: {

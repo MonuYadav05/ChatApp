@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { NextRequestWithAuth } from "next-auth/middleware";
 import { getToken } from "next-auth/jwt";
-import { toast } from "sonner";
 
 export const config = {
     matcher: ['/home', '/room/:path*'],
@@ -10,13 +9,15 @@ export const config = {
 const withAuth = async (req: NextRequestWithAuth) => {
 
     const token = await getToken({ req });
+    console.log("TOKENNEND", token)
     if (!token) {
+        console.log("in token");
         return NextResponse.redirect(new URL("/invalidsession", req.url));
     }
 
-    console.log("Token:", token.jwtToken);
-    console.log("Token:", token);
-    console.log("NEXT_PUBLIC_BASE_URL:", process.env.NEXT_PUBLIC_BASE_URL);
+    // console.log("Token:", token.jwtToken);
+    // console.log("Token:", token);
+    // console.log("NEXT_PUBLIC_BASE_URL:", process.env.NEXT_PUBLIC_BASE_URL);
 
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/user?token=` + token.jwtToken,
         {
@@ -28,6 +29,8 @@ const withAuth = async (req: NextRequestWithAuth) => {
         }
     );
     if (!res.ok) {
+        console.log("in !res.ok");
+
         return NextResponse.redirect(new URL("/invalidsession", req.url));
     }
 
