@@ -1,1 +1,1 @@
-{"root":["./src/index.ts","./src/middlewares.ts","./src/controllers/auth.ts","./src/controllers/chats.ts","./src/controllers/room.ts","./src/routes/index.ts"],"version":"5.7.3"}
+{"root":["./src/server.ts","./src/websocket.ts","./src/controllers/auth.ts","./src/controllers/chats.ts","./src/controllers/room.ts","./src/middleware/authmiddleware.ts","./src/routes/index.ts"],"version":"5.7.3"}
