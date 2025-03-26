@@ -2,8 +2,8 @@
   "name": "Excalidraw",
   "private": true,
   "scripts": {
-    "build": "turbo  build",
-    "dev": "turbo  dev",
+    "build": "turbo run build --filter=web",
+    "dev": "turbo run dev --filter=web",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "check-types": "turbo run check-types",
