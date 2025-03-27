@@ -1,12 +1,9 @@
 "use client"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../ui/card";
-import { Button } from "../ui/button";
-import { Github } from "lucide-react";
 import { SigninForm } from "./SigninForm";
 import Link from "next/link";
 import { SignupForm } from "./SignupForm";
 import { motion } from "framer-motion";
-import { signIn } from "next-auth/react";
 
 export const AuthForm = ({ type }: { type: 'signin' | 'signup' }) => {
 
@@ -15,15 +12,15 @@ export const AuthForm = ({ type }: { type: 'signin' | 'signup' }) => {
     const footerTitle = type === 'signin' ? 'Don\'t have an account?' : 'Already have an account?';
     const footerLink = type === 'signin' ? 'signup' : 'signin';
 
-    return <div className="min-h-[calc(100vh-0rem)] flex items-center  justify-center bg-muted/50">
+    return <div className="min-h-[calc(100vh-3.6rem)] flex items-center p-3 justify-center bg-muted/50">
         <motion.div
             initial={{ y: -100, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: -100, opacity: 0 }}
             transition={{ duration: 0.5 }}
-            className="w-full max-w-md "
+            className="w-full max-w-sm"
         >
-            <Card className="w-full max-w-md mx-4 py-6 bg-background mt-10">
+            <Card className="w-full py-6 bg-background mt-10">
                 <CardHeader>
                     <CardTitle className="text-2xl font-bold">{title}</CardTitle>
                     <CardDescription>{description}</CardDescription>
@@ -60,7 +57,7 @@ export const AuthForm = ({ type }: { type: 'signin' | 'signup' }) => {
                         <div className="absolute inset-0 flex items-center">
                             <span className="w-full border-t" />
                         </div>
-                        <div className="relative flex justify-center text-xs uppercase">
+                       <div className="relative flex justify-center text-xs uppercase">
                             <span className="bg-background px-2 text-muted-foreground">
                                 Or continue with
                             </span>

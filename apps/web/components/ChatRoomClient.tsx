@@ -56,7 +56,7 @@ export default function ChatRoomClient({ roomId, Messages }: {
     return <div className="flex justify-center  h-[calc(100vh-3.5rem)]  bg-background">
 
         {/* Main Chat Area */}
-        <div className=" flex flex-col w-[50vw]">
+        <div className=" flex flex-col md:w-[50vw]">
             {/* Chat Header */}
             <div className="h-14 border-b flex items-center px-4 bg-background">
                 <h2 className="font-semibold flex items-center gap-2">
@@ -65,7 +65,7 @@ export default function ChatRoomClient({ roomId, Messages }: {
             </div>
 
             {/* Messages */}
-            <ScrollArea className="flex-1 px-4 pt-4 h-[calc(100vh-10rem)]" >
+            <ScrollArea className="flex-1 md:px-4 px-1 pt-4 h-[calc(100vh-10rem)]" >
                 <div className="space-y-4" >
                     {messages.map((message, index) => (
                         <Card key={index} className="p-4 bg-background">

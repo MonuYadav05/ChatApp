@@ -6,7 +6,7 @@ import { Button } from "./ui/button";
 import { ThemeToggler } from "@/components/theme/ThemeToggler";
 import { useState } from "react";
 import { signOut, useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 const NAV_ITEMS = [
@@ -48,7 +48,7 @@ export function AppBar() {
                     <ThemeToggler />
                 </div>
 
-                <div>
+                <div className="hidden md:flex">
                     <Button variant={"secondary"} onClick={() => {
                         if (session && session?.data?.user) {
                             toast.loading("Logging Out...");
@@ -56,7 +56,7 @@ export function AppBar() {
                                 callbackUrl: "/"
                             });
                         } else {
-                            router.push("/signin");
+                            redirect("/signin");
                         }
                     }}>
                         {session && session?.data?.user ? "LogOut" : "Sign in"}
@@ -89,8 +89,18 @@ export function AppBar() {
                             ))}
                             <div className="flex items-center gap-2 mr-7">
                                 <ThemeToggler />
-                                <Button asChild className="w-[80%]" variant={"secondary"} onClick={() => setIsOpen(false)}>
-                                    <Link href="/chat">Start Chatting</Link>
+
+                                <Button className="w-[80%] mr-2" variant={"secondary"} onClick={() => {
+                                    if (session && session?.data?.user) {
+                                        toast.loading("Logging Out...");
+                                        signOut({
+                                            callbackUrl: "/"
+                                        });
+                                    } else {
+                                        router.push("/signin");
+                                    }
+                                }}>
+                                    {session && session?.data?.user ? "LogOut" : "Sign in"}
                                 </Button>
                             </div>
                         </div>
