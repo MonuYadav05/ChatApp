@@ -2,7 +2,8 @@
 
 import { useTheme } from "next-themes";
 import { Switch } from "@/components/ui/switch";
-import { Sun, Moon } from "lucide-react";
+import { Sun, Moon, SunIcon, MoonIcon } from "lucide-react";
+import { Button } from "../ui/button";
 
 export function ThemeToggler() {
     const { theme, setTheme } = useTheme();
@@ -10,13 +11,16 @@ export function ThemeToggler() {
 
     return (
         <div className="flex items-center gap-2">
-            <Sun className={`h-5 w-5 ${!isDark ? "text-pink-500" : ""}`} />
-            <Switch
-                className="data-[state=checked]:bg-pink-500 data-[state=unchecked]:bg-input"
-                checked={isDark}
-                onCheckedChange={() => setTheme(isDark ? "light" : "dark")}
-            />
-            <Moon className={`h-5 w-5 ${isDark ? "text-pink-500" : ""}`} />
+               <Button
+      variant="ghost"
+      type="button"
+      size="icon"
+      className="px-2"
+      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+    >
+      <SunIcon className="h-[1.2rem] w-[1.2rem] text-neutral-800 dark:hidden dark:text-neutral-200" />
+      <MoonIcon className="hidden h-[1.2rem] w-[1.2rem] text-neutral-800 dark:block dark:text-neutral-200" />
+    </Button>
         </div>
     );
 }

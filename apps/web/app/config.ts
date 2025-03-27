@@ -1,2 +1,4 @@
-export const BACKEND_URL = "https://chat-backend-aon0.onrender.com";
-export const WS_URL = "wss://chat-backend-aon0.onrender.com";
+export const BACKEND_URL = "http://localhost:4000";
+export const WS_URL = "ws://localhost:4000";
+
+// export const WS_URL = "wss://chat-backend-aon0.onrender.com";

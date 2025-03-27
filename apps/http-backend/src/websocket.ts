@@ -90,14 +90,14 @@ export const websocketController = (server: Server) => {
                 if (parsedData.type == "chat") {
                     const roomId = parsedData.roomId;
                     const message = parsedData.message;
-
+                    const userName = parsedData.userName;
                     users.map((user) => {
                         if (user.rooms.includes(roomId)) {
                             user.ws.send(JSON.stringify({
                                 type: "chat",
                                 message: message,
                                 roomId,
-                                userName: user.userName,
+                                userName: userName,
                                 createdAt: new Date().toISOString(),
                             }));
                         }
