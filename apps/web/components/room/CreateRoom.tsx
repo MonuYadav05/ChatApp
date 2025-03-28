@@ -10,6 +10,7 @@ import { Loader2, Plus } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 
 export default function CreateRoom() {
@@ -21,6 +22,7 @@ export default function CreateRoom() {
         description: "",
         type: "public" as "public" | "private",
     });
+    const router = useRouter();
 
 
     const handleCreateRoom = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -47,13 +49,12 @@ export default function CreateRoom() {
             const room = await response.json();
             // console.log(room)
             toast.success("Room created successfully");
-
             setIsOpen(false);
-            // router.refresh();
-            // router.push(`/room/${name}`);
+            window.location.reload();
+
         } catch (error) {
             toast.error(
-                "Room Already Exists",
+                "Room not Created",
             );
         } finally {
             setIsLoading(false);
