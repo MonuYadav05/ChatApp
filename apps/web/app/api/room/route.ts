@@ -1,10 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import db from "@repo/db/client";
-export async function DELETE(req:NextRequest , res:NextResponse){
+export async function DELETE(req:NextRequest ){
         const data = await req.json();
         try{
                 const slug = data.slug;
-        console.log("vfdvD",slug)
          await db.room.delete({
                 where:{
                         slug: slug
