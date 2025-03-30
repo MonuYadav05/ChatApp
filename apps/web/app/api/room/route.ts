@@ -4,7 +4,6 @@ export async function DELETE(req:NextRequest , res:NextResponse){
         const data = await req.json();
         try{
                 const slug = data.slug;
-        console.log("vfdvD",slug)
          await db.room.delete({
                 where:{
                         slug: slug

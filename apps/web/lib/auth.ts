@@ -72,6 +72,7 @@ export const authOptions = {
                             password: true,
                         }
                     });
+                    console.log("User from DB:", userDb);
                     if (userDb && userDb.password && await bcrypt.compare(password, userDb.password)) {
                         const jwt = await generateJWT({
                             id: userDb.id,
@@ -113,13 +114,17 @@ export const authOptions = {
         },
         jwt: async ({ token, user }: { token: JWT, user: User }): Promise<JWT> => {
             const newToken: token = token as token;
+               console.log("USER in jwt callback:", user);
+              console.log("TOKEN before:", token);
             if (user) {
                 newToken.uid = user.id;
                 newToken.jwtToken = (user as user).token;
             }
+             console.log("TOKEN after:", token);
             return newToken;
         },
     },
+    useSecureCookies: process.env.NODE_ENV === "production",
     pages: {
         signIn: "/signin",
     },

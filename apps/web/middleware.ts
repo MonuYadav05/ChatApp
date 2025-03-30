@@ -10,14 +10,16 @@ const withAuth = async (req: NextRequestWithAuth) => {
 
     const token = await getToken({ req });
     console.log("TOKENNEND", token)
+     console.log("Token:", token?.jwtToken);
+    console.log("NEXTAUTH_URL:", process.env.NEXTAUTH_URL);
+    console.log("NEXT_PUBLIC_BASE_URL:", process.env.NEXT_PUBLIC_BASE_URL);
+    console.log("SECRET", process.env.NEXTAUTH_SECRET)
     if (!token) {
         console.log("in token");
         return NextResponse.redirect(new URL("/invalidsession", req.url));
     }
 
-    // console.log("Token:", token.jwtToken);
-    // console.log("Token:", token);
-    // console.log("NEXT_PUBLIC_BASE_URL:", process.env.NEXT_PUBLIC_BASE_URL);
+   
 
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/user?token=` + token.jwtToken,
         {
