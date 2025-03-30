@@ -3,17 +3,18 @@ import { NextRequestWithAuth } from "next-auth/middleware";
 import { getToken } from "next-auth/jwt";
 
 export const config = {
-    matcher: ['/home', '/room/:path*'],
+    matcher: ['/room/:path*'],
     runtime: "nodejs",
 };
 const withAuth = async (req: NextRequestWithAuth) => {
-
     const token = await getToken({ req });
-    console.log("TOKENNEND", token)
-     console.log("Token:", token?.jwtToken);
-    console.log("NEXTAUTH_URL:", process.env.NEXTAUTH_URL);
-    console.log("NEXT_PUBLIC_BASE_URL:", process.env.NEXT_PUBLIC_BASE_URL);
-    console.log("SECRET", process.env.NEXTAUTH_SECRET)
+
+    // console.log("TOKENNEND", token)
+    // console.log("Token:", token?.jwtToken);
+    // console.log("NEXTAUTH_URL:", process.env.NEXTAUTH_URL);
+    // console.log("NEXT_PUBLIC_BASE_URL:", process.env.NEXT_PUBLIC_BASE_URL);
+    // console.log("SECRET", process.env.NEXTAUTH_SECRET);
+
     if (!token) {
         console.log("in token");
         return NextResponse.redirect(new URL("/invalidsession", req.url));

@@ -6,7 +6,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Loader2, Plus } from "lucide-react";
+import { Divide, Loader2, Plus } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { useSession } from "next-auth/react";
@@ -20,9 +20,9 @@ export default function CreateRoom() {
     const [newRoom, setNewRoom] = useState({
         name: "",
         description: "",
+        password: "",
         type: "public" as "public" | "private",
     });
-    const router = useRouter();
 
 
     const handleCreateRoom = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -32,6 +32,7 @@ export default function CreateRoom() {
         const name = newRoom.name as string;
         const description = newRoom.description as string;
         const type = newRoom.type as "public" | "private";
+        const password = newRoom.password as string;
         // @ts-ignore 
         const token = session?.user?.jwtToken;
         try {
@@ -41,7 +42,7 @@ export default function CreateRoom() {
                     "Content-Type": "application/json",
                     "authorization": `${token}`,
                 },
-                body: JSON.stringify({ name, description, type }),
+                body: JSON.stringify({ name, description, type, password }),
             });
 
             if (!response.ok) throw new Error("Failed to create room");
@@ -105,6 +106,16 @@ export default function CreateRoom() {
                                     />
                                 </div>
                                 <div className="space-y-2">
+                                    <Label htmlFor="password">Password</Label>
+                                    <Input
+                                        id="password"
+                                        placeholder="Enter room password"
+                                        value={newRoom.password}
+                                        onChange={(e) => setNewRoom({ ...newRoom, password: e.target.value })}
+                                        required
+                                    />
+                                </div>
+                                <div className="space-y-2">
                                     <Label htmlFor="type">Room Type</Label>
                                     <Select
                                         value={newRoom.type}
@@ -135,4 +146,30 @@ export default function CreateRoom() {
 
         </div>
     );
+}
+
+export const CheckPass = async (roomId: number) => {
+
+
+    return (<Dialog >
+        <DialogTrigger asChild>
+            <Button className="gap-2" >
+                join Room
+            </Button>
+        </DialogTrigger>
+        <DialogContent>
+            <DialogHeader>
+                <DialogTitle>Confirm password</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-2">
+                <Label htmlFor="password">Room Password</Label>
+                <Input
+                    id="password"
+                    name="password"
+                    placeholder="Enter room password"
+                    required
+                />
+            </div>  </DialogContent>
+    </Dialog>
+    )
 }
